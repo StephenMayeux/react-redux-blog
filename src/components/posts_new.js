@@ -11,19 +11,46 @@ class PostsNew extends Component {
         <div className="form-group">
           <label>Title</label>
           <input type="text" className="form-control" {...title} />
+          <div className="text-danger">
+            {title.touched ? title.error : ''}
+          </div>
         </div>
         <div className="form-group">
           <label>Categories</label>
           <input type="text" className="form-control" {...categories} />
+          <div className="text-danger">
+            {categories.touched ? categories.error : ''}
+          </div>
         </div>
         <div className="form-group">
           <label>Content</label>
           <textarea className="form-control" {...content} />
+          <div className="text-danger">
+            {content.touched ? content.error : ''}
+          </div>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     );
   }
+}
+
+function validate(values) {
+  const errors = {};
+
+  if (!values.title) {
+    errors.title = 'Enter a title';
+  }
+
+  if (!values.categories) {
+    errors.categories = 'Enter at least one category';
+  }
+
+  if (!values.content) {
+    errors.content = 'Write something!';
+  }
+
+  return errors;
 }
 
 // reduxForm and connect are nearly identical!
@@ -36,5 +63,6 @@ class PostsNew extends Component {
 // now action creators are available as props
 export default reduxForm({
   form: 'PostsNewForm',
-  fields: ['title', 'categories', 'content']
+  fields: ['title', 'categories', 'content'],
+  validate
 }, null, { createPost })(PostsNew);
